@@ -1,5 +1,6 @@
 from SRObject import SRVertex
 from SRObject import SRTriangle
+from SRObject import SRObject
 from os import path
 import logging
 import sys
@@ -41,6 +42,9 @@ def read_obj_file(filename: str):
                 line = line.rstrip()
                 if line.startswith("#"):
                     sr_logger.debug(f"Comment line: {line}")
+                elif line.startswith("g "):
+                    sr_logger.debug(f"Object name: {line}")
+                    name = line.split().pop(-1)
                 elif line.startswith("v "):
                     sr_logger.debug(f"Vertex line: {line}")
                     v_parts = line.split()
@@ -76,5 +80,11 @@ def read_obj_file(filename: str):
                     sr_logger.debug(f"We now have {count} faces")
 
         sr_logger.info(f"Read a total of {len(faces)} triangles with {len(vertices)} vertices")
+        obj = SRObject(name)
+        for f in faces:
+            obj.add_triangle(f)
+        sr_logger.info(f"New object created: {obj}")
+        return obj
     else:
         sr_logger.error("Does not exist")
+        return None

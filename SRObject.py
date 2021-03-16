@@ -24,4 +24,24 @@ class SRTriangle:
 
 
 class SRObject:
-    pass
+    def __init__(self, name):
+        self.name = name
+        self.triangles = []
+        self.center_x = 0.0
+        self.center_y = 0.0
+        self.center_z = 0.0
+
+    def __str__(self):
+        t = Template("$name: ($x, $y, $z) with $f triangles")
+        return t.substitute(name=self.name, x=self.center_x, y=self.center_y, z=self.center_z, f=len(self.triangles))
+
+    def change_name(self, new_name):
+        self.name = new_name
+
+    def move_object(self, x, y, z):
+        self.center_x = x
+        self.center_y = y
+        self.center_z = z
+
+    def add_triangle(self, triangle):
+        self.triangles.append(triangle)
